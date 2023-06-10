@@ -43,6 +43,7 @@ GPIO.setmode(GPIO.BCM)
 
 ultrasonic.init(GPIO)
 dcmotor.init(GPIO)
+init()
 
 while True:
     # TODO: ultrasonic.get_dis()를 통해 읽어온 초음파 정보로 이동 판단 알고리즘 추가
@@ -105,3 +106,5 @@ while True:
 
     if cv2.waitKey(1) == ord('q'):
         break
+
+close()
