@@ -5,8 +5,8 @@ Date: 10, June 2023
 """
 import time
 
-ECHO = [21, 22, 23, 24]
-TRIG = [25, 26, 27, 28]
+ECHO = [9, 25, 11, 8]   # Phys 21, 22, 23, 24 / 25 is GND
+TRIG = [7, 0, 1, 5]     # Phys 26, 27, 28, 29
 
 global GPIO
 
