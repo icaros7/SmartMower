@@ -4,6 +4,8 @@ Author: iCAROS7
 Date: 10, June 2023
 """
 
+# Driver0: Vehicle control (Right, Left)
+# Driver1: Mow control (Only one way)
 ENABLE0 = [6, 12]           # Phys 31, 32
 ENABLE1 = [13]              # Phys 33
 INPUT0 = [19, 16, 26, 20]   # Phys 35, 36, 37, 38
@@ -66,10 +68,10 @@ def stop():
 
 def right():
     print('INFO: Set dc motor to Right')
-    GPIO.output(INPUT0[0], True)
-    GPIO.output(INPUT0[1], False)
-    GPIO.output(INPUT0[2], False)
-    GPIO.output(INPUT0[3], True)
+    GPIO.output(INPUT0[0], False)
+    GPIO.output(INPUT0[1], True)
+    GPIO.output(INPUT0[2], True)
+    GPIO.output(INPUT0[3], False)
 
     GPIO.output(ENABLE0[0], True)
     GPIO.output(ENABLE0[1], True)
@@ -77,10 +79,10 @@ def right():
 
 def left():
     print('INFO: Set dc motor to Left')
-    GPIO.output(INPUT0[0], False)
-    GPIO.output(INPUT0[1], True)
-    GPIO.output(INPUT0[2], True)
-    GPIO.output(INPUT0[3], False)
+    GPIO.output(INPUT0[0], True)
+    GPIO.output(INPUT0[1], False)
+    GPIO.output(INPUT0[2], False)
+    GPIO.output(INPUT0[3], True)
 
     GPIO.output(ENABLE0[0], True)
     GPIO.output(ENABLE0[1], True)
