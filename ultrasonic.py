@@ -7,7 +7,7 @@ import time
 
 # Front, Front Right, Front Left, Rear
 ECHO = [9, 25, 11, 8]   # Phys 21, 22, 23, 24 / 25 is GND
-TRIG = [7, 0, 1, 5]     # Phys 26, 27, 28, 29
+TRIG = [7, 17, 18, 27]     # Phys 26, 11, 12, 13
 
 global GPIO
 
