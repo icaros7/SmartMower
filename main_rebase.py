@@ -3,13 +3,15 @@ Prjoect name: Smart Mower
 Author: 이호민 (201735030), 조준영 (201735033)
 Date: 10, June 2023
 """
-import ultrasonic
-import dcmotor
+import time
 
 import RPi.GPIO as GPIO
 import cv2
 import numpy as np
-import time
+
+import dcmotor
+import ultrasonic
+import buzzer
 
 global camera
 global net
@@ -43,14 +45,16 @@ GPIO.setmode(GPIO.BCM)
 
 ultrasonic.init(GPIO)
 dcmotor.init(GPIO)
+buzzer.init(GPIO)
 init()
 
 while True:
-    # TODO: ultrasonic.get_dis()를 통해 읽어온 초음파 정보로 이동 판단 알고리즘 추가
     dis_arr = ultrasonic.get_dis()
 
-    if dis_arr[0] < 5.0:  # TODO: 예시, 전방 5cm가 안남았으면 멈춰라
-        dcmotor.stop()
+    if dis_arr[0] > 5.0 and dis_arr[1] > 5.0 and dis_arr[2] > 5.0:  # 근방 5cm 이내 장애물 미 탐지시 전진
+        dcmotor.forward(100)
+    else:   # 근방 5cm 이내 장애물 탐지 시 카메라 인식 수행
+        pass
 
     ret, frame = camera.read()
     blob = cv2.dnn.blobFromImage(frame, 1 / 255, (416, 416), swapRB=True, crop=False)
@@ -93,14 +97,20 @@ while True:
         cv2.putText(frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         if classes[class_ids[i]] == 'person':
-            # TODO: 사람 회피 동작
-            dcmotor.stop()  # TODO: 예시, 차량 정지
+            dcmotor.stop()
+            buzzer.beep()
 
-        if classes[class_ids[i]] == 'weed':
-            # TODO: 잡초 탐지 동작
-            dcmotor.left()  # TODO: 예시, 왼쪽으로 1초 몸을 튼 후 다시 전진
-            time.sleep(1)
-            dcmotor.forward()
+            if dis_arr[3] > 10.0:
+                dcmotor.reserve(50)
+                time.sleep(3)
+                dcmotor.stop()
+                pass
+
+        elif classes[class_ids[i]] == 'weed':
+            dcmotor.forward(50)
+            dcmotor.mow_on()
+        else:
+            dcmotor.mow_off()
 
     cv2.imshow('Camera', frame)
 
